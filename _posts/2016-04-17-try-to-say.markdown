@@ -1,0 +1,9 @@
+---
+layout: post
+title:  "Try to say something"
+date:   2016-04-17 21:00:56 +0800
+categories: jekyll update
+---
+
+I use pelican before today.(wrong ways?)
+now i changed to jekyll and found that tools made in ruby is very human.

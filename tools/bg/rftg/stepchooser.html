@@ -1,0 +1,153 @@
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="vue.js"></script>
+<link rel="stylesheet" href="pure-min.css">
+<style>
+
+#stepName {
+	font-size:50px;
+	line-height:120%;
+	font-weight: bold;
+}
+#stepDetail {
+	font-size: 30px;
+	font-style:italic;
+}
+
+#app {
+	position:fixed;
+	top:200px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="board">
+	<br/>
+	<label id="stepName">
+	{{ choosenStepName }}
+	<label>
+	<br/>
+	<label id="stepDetail">
+	{{ choosenStepInfo }}
+	</label>
+</div>
+
+<div id="app">
+  <div>
+  <label v-for="(step, index) in steps">
+	  <button v-on:click='chooseStep(index)' class="pure-button">
+		{{ step.name }}
+	  </button>
+	  <br/>
+  </label>
+  </div>
+  <hr/>
+   <button v-on:click='doSet()' class="pure-button">{{sysText.settingButton }}</button>
+   <form   v-if='setSwitch' class="pure-form">
+   <select id="state" v-model='extSetting'>
+            <option v-for='(ext, index) in extensions' v-bind:value='index'>{{ ext.name }}</option>
+   </select>
+   <br/>
+   <img src='qrcode.png' />
+   </form>
+   
+</div>
+
+
+<script>
+var stepsData = [
+	[
+		{ name: '1.探索 +1+1',
+		  info: '抽取3张卡牌，保留其中2张'
+		},
+		{ name: '1.探索 +5',
+		  info: '抽取7张卡牌，保留其中1张'
+		},
+		{ name: '2.开发',
+		  info: '打出一个设施，其费用减1'
+		},
+		{ name: '3.扩张',
+		  info: '成功扩张一个星球后，抽一张卡'
+		},
+		{ name: '4.消费 交易',
+		  info: '在进入消费阶段之前，先进行交易阶段'
+		},
+		{ name: '4.消费 双倍VP',
+		  info: '获取的VP变为两倍'
+		},
+		{ name: '5.生产',
+		  info: '可以在一个光环星球上生产一个货物'
+		}
+	],
+	[
+		{ name: '1.探索 +1+1',
+		  info: '抽取3张卡牌，保留其中2张'
+		},
+		{ name: '1.探索 +5',
+		  info: '抽取7张卡牌，保留其中1张'
+		},
+		{ name: '2.开发',
+		  info: '打出一个设施，其费用减1'
+		},
+		{ name: '3.扩张',
+		  info: '成功扩张一个星球后，抽一张卡'
+		},
+		{ name: '4.消费 交易',
+		  info: '在进入消费阶段之前，先进行交易阶段'
+		},
+		{ name: '4.消费 双倍VP',
+		  info: '获取的VP变为两倍'
+		},
+		{ name: '5.生产',
+		  info: '可以在一个光环星球上生产一个货物'
+		},
+		{ name: '5.生产 修复',
+		  info: '可以修复两个被毁坏的星球'
+		}
+	]
+];
+
+var extData = [{name: '基础游戏'}, {name: '异形入侵'}];
+
+var board = new Vue({
+	el: '#board',
+	data: {
+		choosenStepName: '#银河竞逐',
+		choosenStepInfo: '回合选择器'
+	}
+});
+
+
+var app = new Vue({
+  el: '#app',
+  data: {
+	extensions: extData,
+    steps: stepsData[0],
+	sysText: { settingButton: '>>'},
+	setSwitch: false,
+	extSetting: 0,
+	chooseStep: function(index){
+		board.choosenStepName = this.steps[index].name;
+		board.choosenStepInfo = this.steps[index].info;
+	},
+	doSet: function(){
+		if(this.setSwitch){
+			this.sysText.settingButton = '<<';
+		}else this.sysText.settingButton = '>>';
+		this.setSwitch = !this.setSwitch;
+		console.log(this.extSetting);
+		this.steps = stepsData[this.extSetting];
+	}
+  }
+});
+
+
+</script>
+
+</body>
+
+</html>
